@@ -14,7 +14,7 @@ const AdBanner = () => {
             />
             <div className="absolute w-full h-full bg-black opacity-30"></div>
             <Container>
-                <div className="bg-[#85634F] p-8 absolute mt-[105px] max-w-[40%] flex flex-col gap-2 items-start justify-center">
+                <div className="bg-[#85634F] p-8 absolute mt-[105px] max-w-[30%] flex flex-col gap-2 items-start justify-center">
                     <h1 className="text-6xl text-white uppercase font-serif">
                         Mega Sale is Here!
                     </h1>
