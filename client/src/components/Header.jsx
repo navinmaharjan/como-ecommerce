@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import Container from "./Container";
 import Logo from "./Logo";
 import NavMenu from "./NavMenu";
 import NavUserMenu from "./NavUserMenu";
-import ShopMenu from "./ShopMenu";
 
 const Header = () => {
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const [isSearchBarOpen, setIsSearchBarOpen] = useState(false);
     const headerRef = useRef(null);
 
     useEffect(() => {
-        if (isCartOpen) {
+        if (isCartOpen || isSearchBarOpen) {
             const scrollbarWidth =
                 window.innerWidth - document.documentElement.clientWidth;
 
@@ -40,14 +40,19 @@ const Header = () => {
                 headerRef.current.style.paddingRight = "";
             }
         };
-    }, [isCartOpen]);
+    }, [isCartOpen, isSearchBarOpen]);
     return (
         <header ref={headerRef} className="absolute z-50 w-full">
             <Container>
                 <div className="flex justify-between items-center">
                     <Logo />
                     <NavMenu />
-                    <NavUserMenu isCartOpen={isCartOpen} setIsCartOpen={setIsCartOpen} />
+                    <NavUserMenu
+                        isCartOpen={isCartOpen}
+                        setIsCartOpen={setIsCartOpen}
+                        isSearchBarOpen={isSearchBarOpen}
+                        setIsSearchBarOpen={setIsSearchBarOpen}
+                    />
                 </div>
             </Container>
         </header>
