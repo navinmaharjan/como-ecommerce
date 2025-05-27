@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 
 const Hero = () => {
   return (
-    <div className="relative w-full h-[775px] overflow-hidden">
+    <div className="relative w-full h-[780px] overflow-hidden">
       <Image
         width={2000}
         height={2000}

@@ -1,10 +1,31 @@
 "use client";
 
-import { Search, User, ShoppingCart, X, TrendingUp, Clock } from "lucide-react";
+import {
+  Search,
+  User,
+  ShoppingCart,
+  X,
+  TrendingUp,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const NavUserMenu = ({
   isCartOpen,
@@ -14,6 +35,48 @@ const NavUserMenu = ({
 }) => {
   const cartRef = useRef(null);
   const searchRef = useRef(null);
+
+  const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    name: "",
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isLogin) {
+      console.log("Login attempt:", {
+        email: formData.email,
+        password: formData.password,
+      });
+    } else {
+      if (formData.password !== formData.confirmPassword) {
+        alert("Passwords don't match!");
+        return;
+      }
+      console.log("Sign up attempt:", formData);
+    }
+  };
+
+  const toggleMode = () => {
+    setIsLogin(!isLogin);
+    setFormData({
+      email: "",
+      password: "",
+      confirmPassword: "",
+      name: "",
+    });
+  };
 
   // Close cart when clicking outside
   useEffect(() => {
@@ -35,25 +98,179 @@ const NavUserMenu = ({
 
   return (
     <div>
-      <ul className="flex text-white">
+      <ul className="flex text-white gap-1">
         <li
           onClick={() => setIsSearchBarOpen(true)}
           className="w-8 h-8 rounded-full flex justify-center items-center hover:bg-black/10 transition-all duration-300 cursor-pointer"
         >
           <Search size={"20"} />
         </li>
-        <li className="w-8 h-8 rounded-full flex justify-center items-center hover:bg-black/10 transition-all duration-300 cursor-pointer">
-          <User size={"20"} />
-        </li>
+
         <li
           onClick={() => setIsCartOpen(true)}
           className="w-8 h-8 rounded-full flex justify-center items-center hover:bg-black/10 transition-all duration-300 cursor-pointer relative"
         >
           <ShoppingCart size={"20"} />
-          <div className="absolute -top-1 right-0 w-4 h-4 bg-black rounded-full flex justify-center items-center">
+          {/* <div className="absolute -top-1 right-0 w-4 h-4 bg-black rounded-full flex justify-center items-center">
             <span className="text-xs">0</span>
-          </div>
+          </div> */}
         </li>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Link href="#">
+              <li className="w-8 h-8 rounded-full flex justify-center items-center hover:bg-black/10 transition-all duration-300 cursor-pointer">
+                <User size={"20"} />
+              </li>
+            </Link>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>
+                {isLogin ? "Welcome back" : "Create account"}
+              </DialogTitle>
+              <DialogDescription>
+                {isLogin
+                  ? "Enter your credentials to access your account."
+                  : "Fill in your details to create a new account."}
+              </DialogDescription>
+            </DialogHeader>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid gap-4 py-4">
+                {!isLogin && (
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    {/* <Label htmlFor="name" className="text-right">
+                      Name
+                    </Label> */}
+                    <div className="col-span-4 relative">
+                      <Input
+                        id="name"
+                        name="name"
+                        type="text"
+                        placeholder="Enter your full name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required={!isLogin}
+                        className="pl-10"
+                      />
+                      <User
+                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        size={16}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-4 items-center gap-4">
+                  {/* <Label htmlFor="email" className="text-right">
+                    Email
+                  </Label> */}
+                  <div className="col-span-4 relative">
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="Email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className="pl-10"
+                    />
+                    <Mail
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                      size={16}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-4 items-center gap-4">
+                  {/* <Label htmlFor="password" className="text-right">
+                    Password
+                  </Label> */}
+                  <div className="col-span-4 relative">
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      required
+                      className="pl-10 pr-10"
+                    />
+                    <Lock
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                      size={16}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                </div>
+
+                {!isLogin && (
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    {/* <Label htmlFor="confirmPassword" className="text-right">
+                      Confirm
+                    </Label> */}
+                    <div className="col-span-4 relative">
+                      <Input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Confirm your password"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        required={!isLogin}
+                        className="pl-10"
+                      />
+                      <Lock
+                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        size={16}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <Button type="submit" className="w-full">
+                  {isLogin ? "Sign in" : "Create account"}
+                </Button>
+
+                <div className="text-center">
+                  <span className="text-sm text-gray-600">
+                    {isLogin
+                      ? "Don't have an account? "
+                      : "Already have an account? "}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={toggleMode}
+                    className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    {isLogin ? "Sign up" : "Sign in"}
+                  </button>
+                </div>
+
+                {isLogin && (
+                  <div className="text-center">
+                    <button
+                      type="button"
+                      className="text-sm text-gray-600 hover:text-gray-800"
+                    >
+                      Forgot your password?
+                    </button>
+                  </div>
+                )}
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
       </ul>
 
       {/* Background Overlay when cart or search is true */}
@@ -187,7 +404,6 @@ const NavUserMenu = ({
                 Most Searched
               </h3>
               <div className="space-y-3">
-               
                 <div className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 transition-colors">
                   <div className="w-12 h-12 bg-gray-100 relative rounded-lg overflow-hidden">
                     <Image
@@ -207,7 +423,6 @@ const NavUserMenu = ({
                   <TrendingUp className="text-green-500" size={16} />
                 </div>
 
-              
                 <div className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 transition-colors">
                   <div className="w-12 h-12 bg-gray-100 relative rounded-lg overflow-hidden">
                     <Image
@@ -227,7 +442,6 @@ const NavUserMenu = ({
                   <TrendingUp className="text-green-500" size={16} />
                 </div>
 
-               
                 <div className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 transition-colors">
                   <div className="w-12 h-12 bg-gray-100 relative rounded-lg overflow-hidden">
                     <Image
@@ -247,7 +461,6 @@ const NavUserMenu = ({
                   <TrendingUp className="text-green-500" size={16} />
                 </div>
 
-               
                 <div className="flex items-center gap-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg px-2 transition-colors">
                   <div className="w-12 h-12 bg-gray-100 relative rounded-lg overflow-hidden">
                     <Image
