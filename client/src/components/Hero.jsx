@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -16,7 +17,9 @@ const Hero = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[40%] h-40 w-[60%] max-w-4xl text-center rounded-lg flex flex-col gap-2 items-center justify-center">
         <h1 className="text-6xl text-white uppercase font-serif">Elevate Your Style</h1>
         <p className="px-32 text-white font-light tracking-widest text-sm">Discover the latest collection from top international and local brands.Shop now and redefine your wardrobe with premium quality and exclusive designs</p>
-        <Button className="uppercase tracking-wider mt-2">Shop Now</Button>
+        <Link href="/shop">
+          <Button className="uppercase tracking-wider mt-2">Shop Now</Button>
+        </Link>
       </div>
     </div>
   );

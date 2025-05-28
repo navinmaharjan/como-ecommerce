@@ -98,17 +98,17 @@ const NavUserMenu = ({
 
   return (
     <div>
-      <ul className="flex text-white gap-1">
+      <ul className="flex gap-1 text-white">
         <li
           onClick={() => setIsSearchBarOpen(true)}
-          className="w-8 h-8 rounded-full flex justify-center items-center hover:bg-black/10 transition-all duration-300 cursor-pointer"
+          className="w-8 h-8 rounded-full flex justify-center items-center hover:bg-white/10 transition-all duration-300 cursor-pointer"
         >
           <Search size={"20"} />
         </li>
 
         <li
           onClick={() => setIsCartOpen(true)}
-          className="w-8 h-8 rounded-full flex justify-center items-center hover:bg-black/10 transition-all duration-300 cursor-pointer relative"
+          className="w-8 h-8 rounded-full flex justify-center items-center hover:bg-white/10 transition-all duration-300 cursor-pointer relative"
         >
           <ShoppingCart size={"20"} />
           {/* <div className="absolute -top-1 right-0 w-4 h-4 bg-black rounded-full flex justify-center items-center">
@@ -119,7 +119,7 @@ const NavUserMenu = ({
         <Dialog>
           <DialogTrigger asChild>
             <Link href="#">
-              <li className="w-8 h-8 rounded-full flex justify-center items-center hover:bg-black/10 transition-all duration-300 cursor-pointer">
+              <li className="w-8 h-8 rounded-full flex justify-center items-center hover:bg-white/10 transition-all duration-300 cursor-pointer">
                 <User size={"20"} />
               </li>
             </Link>
